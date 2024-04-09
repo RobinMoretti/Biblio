@@ -31,6 +31,9 @@ export default defineConfig(async ({ command, mode}) => {
 			}
 		},
 		define: { 'process.env': { data: data, baseUrl: "https://databases.robinmoretti.eu"} },
+		build: {
+		  outDir: './www'
+		}
 	}
 })
 
