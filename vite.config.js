@@ -6,23 +6,19 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 
 import { Api } from 'nocodb-sdk'
 
-const api = new Api({
-  baseURL: 'https://databases.robinmoretti.eu',
-  headers: {
-	'xc-token': 'qUcPHD5V41Oo-HzTHEa6UTmBlY88BgdrAB63pjw3'
-  }
-})
+let api;
 
-console.log('import.meta.env =', import.meta.env)
-
-// console.log("weeessshhhh")
-
-// https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode}) => {
-//   const data = await asyncFunction()
-  const data = await getData();
+	api = new Api({
+	  baseURL: 'https://databases.robinmoretti.eu',
+	  headers: {
+		'xc-token': loadEnv(mode, process.cwd()).VITE_TOKEN
+	  }
+	})
+		
+	const data = await getData();
   
-  return {
+	return {
 		plugins: [
 			vue(),
 			VueDevTools(),
@@ -34,7 +30,7 @@ export default defineConfig(async ({ command, mode}) => {
 		},
 		define: { 'process.env': { data: data, baseUrl: "https://databases.robinmoretti.eu"} },
 		build: {
-		  outDir: './www'
+		outDir: './www'
 		}
 	}
 })
