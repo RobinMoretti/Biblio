@@ -13,6 +13,8 @@ const api = new Api({
   }
 })
 
+console.log('import.meta.env =', import.meta.env)
+
 // console.log("weeessshhhh")
 
 // https://vitejs.dev/config/
