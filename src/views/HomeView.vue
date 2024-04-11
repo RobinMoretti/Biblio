@@ -12,10 +12,10 @@
 			<img v-if="game.Image" :src="baseUrl + '/' + game.Image[0]['path']" alt="">
 			<h2>{{ game.Name }}</h2>
 			<p class="author">{{ game["Auteur - éditeur"] }}</p>
-			<p class="author">{{ game["Date de création"] }}</p>
-			<p class="author">{{ game["Spécifité"] }}</p>
-			<p class="author">{{ game["Durée"] }}</p>
-			<p class="author">{{ game["Warning"] }}</p>
+			<p class="created-date">{{ game["Date de création"] }}</p>
+			<p class="details">{{ game["Spécifité"] }}</p>
+			<p class="time">{{ game["Durée"] }}</p>
+			<p class="warning">{{ game["Warning"] }}</p>
 			<h3>Types: </h3>
 			<div class="types" v-for="type in game['Types'].split(',')" v-if="game['Types']">
 				<p class="type">{{ type }}</p>
