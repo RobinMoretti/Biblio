@@ -44,7 +44,7 @@ async function getData() {
 		"vwtie9l5kkrboyat", {
 			"offset": 0,
 			"limit": 25,
-			"where": ""
+			"where": "(Visible,eq,1)"
 	})
 	return response.list;
 }
