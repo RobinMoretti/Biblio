@@ -35,8 +35,37 @@ main {
   // -webkit-box-shadow: 5px 5px 23px 5px rgba(0, 0, 0, 0.1);
   // box-shadow: 5px 5px 23px 5px rgba(0, 0, 0, 0.1);
   border: solid 1px rgba($color: #000000, $alpha: 0.1);
+  
   .content {
-    margin-top: 0;
+    padding: 0.5rem 1.2rem 1rem 1.2rem;
+
+    .row{
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      border-bottom: solid 1px rgba($color: #000000, $alpha: 0.1);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+
+      .left-column{
+        min-width: 70px;
+      }
+      .right-column{
+        text-align: right;
+      }
+    }
+
+    .last{
+      border-bottom: unset !important;
+    }
+  }
+
+  header{
+	  padding: 0.5rem 1.2rem 1rem 1.2rem;
+  }
+
+  .content {
+	  margin-top: 0;
   }
 
   h2 {
@@ -45,11 +74,11 @@ main {
   }
 
   .author {
-    margin-bottom: 2rem;
+	  margin-bottom: 2rem;
   }
 
   .created-date {
-    float: right;
+	  float: right;
   }
 
   img {
@@ -58,19 +87,18 @@ main {
     object-fit: cover;
     border-bottom: solid 1px rgba($color: #000000, $alpha: 0.1);
   }
-  .content {
-    padding: 0.5rem 1.2rem 1rem 1.2rem;
-  }
 
   .tags-container {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
 
     .title {
       margin-right: 1rem;
     }
+
+
   }
 
   .tag {
@@ -78,7 +106,7 @@ main {
     padding: 0.05rem 0.7rem;
     margin-right: 0.5rem;
     border-radius: 35px;
-    background-color: rgb(109, 113, 113);
+    background-color: rgb(155, 155, 155);
     color: white;
     font-weight: bold;
   }
@@ -106,19 +134,19 @@ a,
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+	background-color: hsla(160, 100%, 37%, 0.2);
   }
 }
 
 @media (min-width: 1024px) {
   body {
-    display: flex;
-    place-items: center;
+	display: flex;
+	place-items: center;
   }
 
   #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	padding: 0 2rem;
   }
 } */
