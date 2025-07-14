@@ -84,13 +84,15 @@ const visible = ref(true);
             <div class="styles-container row last" v-if="game.style && game.style.length">
                 <span class="left-column title">Styles :</span>
 
-                <span
-                    class="right-column"
-                    v-for="(style, key) in game.style"
-                    v-bind:key="'style-' + key"
-                >
-                    {{ style }}
-                    {{ key < game.style.length - 1 ? "," : "" }}
+                <span class="text-right">
+                    <span
+                        class="right-column"
+                        v-for="(style, key) in game.style"
+                        v-bind:key="'style-' + key"
+                    >
+                        {{ style }}
+                        {{ key < game.style.length - 1 ? "," : "" }}
+                    </span>
                 </span>
             </div>
         </div>
@@ -99,11 +101,17 @@ const visible = ref(true);
 
 <style scoped lang="scss">
 .game-item {
+    width: 30%;
     border-radius: 10px;
     background-color: #fefefe;
     overflow: hidden;
 
     border: solid 1px rgba($color: #000000, $alpha: 0.1);
+    margin-bottom: 3rem;
+
+    // add a box shadow
+    -webkit-box-shadow: 3px 0px 15px 4px rgba(0, 0, 0, 0.08);
+    box-shadow: 3px 0px 15px 4px rgba(0, 0, 0, 0.08);
 
     img {
         width: 100%;
@@ -132,7 +140,7 @@ const visible = ref(true);
 
     .content {
         padding: 0.5rem 1.2rem 1rem 1.2rem;
-        max-height: 200vh;
+        max-height: 200rem;
         transition: all 0.2s;
 
         .row {
@@ -204,6 +212,18 @@ const visible = ref(true);
         background-color: rgb(155, 155, 155);
         color: white;
         font-weight: bold;
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .game-item {
+        width: 48%;
+    }
+}
+@media screen and (max-width: 710px) {
+    .game-item {
+        width: 100%;
+        margin-bottom: 1rem;
     }
 }
 </style>
