@@ -1,16 +1,16 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
 </script>
 
 <template>
     <header>
-        <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
         <div class="wrapper">
             <h1>Ludoth-que</h1>
-            <!-- <nav>
+            <nav>
                 <RouterLink to="/">Home</RouterLink>
-            </nav> -->
+                <RouterLink to="/Ludoth-que">Ludoth-que</RouterLink>
+                <RouterLink to="/TipsAndTricks">TipsAndTricks</RouterLink>
+            </nav>
         </div>
     </header>
 

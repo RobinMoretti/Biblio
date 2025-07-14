@@ -1,21 +1,11 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import VueDevTools from 'vite-plugin-vue-devtools'
+import { createDirectus, rest, authentication, readItems} from '@directus/sdk';
 
-import { Api } from 'nocodb-sdk'
-
-let api;
-
-export default defineConfig(async ({ command, mode}) => {
-	api = new Api({
-	  baseURL: 'https://databases.robinmoretti.eu',
-	  headers: {
-		'xc-token': loadEnv(mode, process.cwd()).VITE_TOKEN
-	  }
-	})
-		
+export default defineConfig(async () => {
 	const data = await getData();
   
 	return {
@@ -28,23 +18,20 @@ export default defineConfig(async ({ command, mode}) => {
 				'@': fileURLToPath(new URL('./src', import.meta.url))
 			}
 		},
-		define: { 'process.env': { data: data, baseUrl: "https://databases.robinmoretti.eu"} },
+		define: { 'process.env': { data: data, baseUrl: "https://directus.robinmoretti.eu"} },
 		build: {
-		outDir: './www'
+			outDir: './www'
 		}
 	}
 })
 
-
 async function getData() {
-	const response = await api.dbViewRow.list(
-		"noco",
-		"pr14d1a80kphz3g",
-		"mygz3a7xx4omeos",
-		"vwtie9l5kkrboyat", {
-			"offset": 0,
-			"limit": 25,
-			"where": "(Visible,eq,1)"
-	})
-	return response.list;
+    try {
+        const client = createDirectus('https://directus.robinmoretti.eu').with(rest()).with(authentication());
+		await client.setToken('TRi-qBTq1ZAbg3qv-ETSeWn_nMBf2l1C');
+        return await client.request(readItems('ludoth_que'));
+    }
+    catch (e) {
+        console.log(e)
+    }
 }
