@@ -32,7 +32,7 @@ if (duration.value < 1) {
     <div class="game-item">
         <img
             v-if="game.image"
-            :src="baseUrl + '/assets/' + game.image + '?width=1500&quality=98'"
+            v-lazy="baseUrl + '/assets/' + game.image + '?width=1500&quality=98'"
         />
 
         <header>

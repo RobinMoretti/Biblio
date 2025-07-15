@@ -27,6 +27,8 @@ const description = computed(() => {
 
     // return props.card.Description.replace(/<\/?p>/g, "");
 });
+
+let visible = ref(true);
 </script>
 
 <template>
@@ -34,7 +36,13 @@ const description = computed(() => {
         <header>
             <span v-html="card.Title" class="title"></span>
             <span v-html="card['Short_description']" class="description"></span>
-            <span v-html="card['Category']" class="category"></span>
+            <span class="category">
+                <div
+                    class="tag"
+                    v-html="card['Category']"
+                    :class="card['Category']"
+                ></div>
+            </span>
             <span class="tags-container">
                 <span
                     class="tag"
@@ -44,10 +52,15 @@ const description = computed(() => {
                     {{ tag.resources_game_dev_tags_id.name }}
                 </span>
             </span>
+            <div class="displayer-button">
+                <button class="detail-button" v-on:click="visible = !visible">
+                    {{ visible ? "plus d'infos" : "cacher" }}
+                </button>
+            </div>
         </header>
         <div class="content" :class="{ hide: visible }">
             <img
-                :src="
+                v-lazy="
                     'https://directus.robinmoretti.eu/assets/' + card['header_image'].id
                 "
                 alt=""
@@ -83,12 +96,20 @@ const description = computed(() => {
 .tip-item {
     width: 100%;
     padding: 1rem 0;
-    border-top: 1px solid black;
+    // border-top: 1px solid black;
+    background-color: white;
+
+    border-top: solid 1px rgba($color: #000000, $alpha: 0.1);
+    // border-left: none;
+    // border-right: none;
+    padding-left: 2rem;
+    padding-right: 2rem;
 
     header {
         width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: baseline;
 
         span {
             display: inline-block;
@@ -96,19 +117,67 @@ const description = computed(() => {
 
         .title {
             width: 20%;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding-right: 20px;
         }
 
         .description {
-            width: 55%;
+            width: 45%;
             text-align: left;
+            padding-right: 20px;
+        }
+
+        .category,
+        .tags-container {
+            .tag {
+                border-radius: 40px;
+                background-color: rgba(128, 128, 128, 0.842);
+                color: white;
+                font-weight: 500;
+                padding: 0.2rem 0.6rem;
+                margin-left: 1rem;
+                text-transform: uppercase;
+            }
         }
         .category {
             width: 5%;
             text-align: center;
+            .tag {
+                margin-left: 0rem;
+                display: inline;
+            }
+
+            .tools {
+                background-color: rgb(22, 194, 194);
+            }
+            .tips {
+                background-color: rgb(230, 205, 15);
+            }
         }
+
         .tags-container {
             width: 20%;
-            text-align: right;
+            text-align: center;
+        }
+
+        .displayer-button {
+            width: 10%;
+            position: relative;
+
+            .detail-button {
+                cursor: pointer;
+                border: #000000;
+                border-radius: 0px;
+                border-end-start-radius: 5px;
+                border-end-end-radius: 5px;
+                padding: 5px 10px;
+                position: absolute;
+                right: 30px;
+                left: 0px;
+                top: -37px;
+                transform: translate(50%);
+            }
         }
     }
 
@@ -116,10 +185,22 @@ const description = computed(() => {
         display: flex;
         margin: 1rem 0;
 
+        overflow: hidden;
+        max-height: 100rem;
+        align-items: start;
+
+        transition: all 0.3s;
+
+        &.hide {
+            max-height: 0;
+            margin: 0;
+        }
+
         img {
             width: 300px;
             height: 200px;
             object-fit: cover;
+            border-radius: 10px;
         }
 
         .text-content {

@@ -13,7 +13,7 @@ function toggleInformations() {
 
 <template>
     <div class="game-item" :class="{ active: cardIsActive }">
-        <img v-if="game.Image" :src="baseUrl + '/' + game.Image[0]['path']" alt="" />
+        <img v-if="game.Image" v-lazy="baseUrl + '/' + game.Image[0]['path']" alt="" />
 
         <header>
             <div class="up">

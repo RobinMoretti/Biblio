@@ -5,12 +5,14 @@ import { RouterLink, RouterView } from "vue-router";
 <template>
     <header>
         <div class="wrapper">
-            <img class="avatar" src="./assets/avatar-icon-2.png" alt="" />
-            <h1>Bibliothèque</h1>
+            <div class="first-part">
+                <img class="avatar" src="./assets/avatar-icon-2.png" alt="" />
+                <h1>Bibliothèque numérique - {{ $route.name }}</h1>
+            </div>
             <nav>
-                <RouterLink to="/">Home</RouterLink>
                 <RouterLink to="/Ludoth-que">Ludoth-que</RouterLink>
-                <RouterLink to="/petites-fiches">TipsAndTricks</RouterLink>
+                <RouterLink to="/petites-fiches-techniques">TipsAndTricks</RouterLink>
+                <a href="https://robinmoretti.eu">-> back home</a>
             </nav>
         </div>
     </header>
@@ -22,6 +24,9 @@ import { RouterLink, RouterView } from "vue-router";
 .wrapper {
     background-color: white;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
     padding: 1rem 1rem;
     font-size: 1rem;
     width: 100%;
@@ -32,7 +37,17 @@ import { RouterLink, RouterView } from "vue-router";
 
     align-items: center;
 
+    .first-part {
+        display: flex;
+        width: 60%;
+        align-items: center;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+
     .avatar {
+        margin-left: 11%;
         width: 3rem;
         margin-right: 1rem;
     }
@@ -55,6 +70,8 @@ import { RouterLink, RouterView } from "vue-router";
                 font-weight: bold;
             }
         }
+
+        margin-right: 11%;
     }
 }
 </style>

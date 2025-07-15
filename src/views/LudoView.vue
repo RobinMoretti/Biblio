@@ -37,20 +37,15 @@ games.value.forEach((game) => {
 
 <template>
     <main>
-        <!-- <multiselect
-            v-model="selectedType"
-            :options="types"
-            :multiple="true"
-            :close-on-select="false"
-            :clear-on-select="false"
-        ></multiselect> -->
-
-        <game-item
-            v-for="(game, key) in games"
-            v-bind:key="'game-' + key"
-            :game="game"
-            :baseUrl="baseUrl"
-        ></game-item>
+        <p class="description">Une simple collection de jeux à conseiller.</p>
+        <div class="games-container">
+            <game-item
+                v-for="(game, key) in games"
+                v-bind:key="'game-' + key"
+                :game="game"
+                :baseUrl="baseUrl"
+            ></game-item>
+        </div>
     </main>
 </template>
 
@@ -59,22 +54,26 @@ games.value.forEach((game) => {
 main {
     max-width: 1280px;
     margin: auto;
-    margin-top: 4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    margin-top: 2rem;
     /* grid-template-columns: repeat(3, minmax(0, 1fr)); */
     padding: 0;
     width: 100%;
-    gap: 3.5%;
     padding: 0 3rem;
+    .description {
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+    .games-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
 
     @media (max-width: 1250px) {
-        gap: 4%;
     }
+
     @media (max-width: 800px) {
-        gap: 4%;
         padding: 0 1rem;
         margin-top: 1rem;
     }

@@ -15,6 +15,7 @@ let tipsCardsDatas = ref(process.env.tipsCards);
             <span class="description">Description</span>
             <span class="category">Category</span>
             <span class="tags-container">Tags</span>
+            <span class="empty-container"></span>
         </div>
 
         <tips-card
@@ -31,21 +32,28 @@ main {
     max-width: 1280px;
     margin: auto;
     margin-top: 4rem;
+    margin-bottom: 4rem;
     display: flex;
     // justify-content: space-between;
     // align-items: flex-start;
     flex-wrap: wrap;
     /* grid-template-columns: repeat(3, minmax(0, 1fr)); */
     padding: 0;
-    width: 100%;
+    width: 90%;
     gap: 3.5%;
-    padding: 0 3rem;
+    padding: 0 0rem;
+
+    border-radius: 10px;
+    // add a box shadow
+    -webkit-box-shadow: 3px 0px 15px 4px rgba(0, 0, 0, 0.08);
+    box-shadow: 3px 0px 15px 4px rgba(0, 0, 0, 0.08);
+    background-color: white;
+    border: solid 1px rgba($color: #000000, $alpha: 0.1);
+    overflow: hidden;
 
     @media (max-width: 1250px) {
-        gap: 4%;
     }
     @media (max-width: 800px) {
-        gap: 4%;
         padding: 0 1rem;
         margin-top: 1rem;
     }
@@ -53,9 +61,14 @@ main {
     padding-bottom: 3rem;
 
     .header {
+        padding: 0.5rem 2rem;
         width: 100%;
         display: flex;
         justify-content: space-between;
+
+        background-color: white;
+
+        border-bottom: none;
 
         span {
             display: inline-block;
@@ -66,16 +79,22 @@ main {
         }
 
         .description {
-            width: 55%;
+            width: 45%;
             text-align: left;
         }
+
         .category {
             width: 5%;
             text-align: center;
         }
+
         .tags-container {
             width: 20%;
-            text-align: right;
+            text-align: center;
+        }
+
+        .empty-container {
+            width: 10%;
         }
     }
 }
