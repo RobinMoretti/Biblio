@@ -10,9 +10,14 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/Ludoth-que',
+      path: '/ludoth-que',
       name: 'Ludothèque',
       component: () => import('../views/LudoView.vue')
+    },
+    {
+      path: '/petites-fiches',
+      name: 'Petites Fiches',
+      component: () => import('../views/TipsView.vue')
     },
     // {
     //   path: '/about',

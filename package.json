@@ -12,9 +12,14 @@
   },
   "dependencies": {
     "@directus/sdk": "^18.0.3",
+    "github-markdown-css": "^5.8.1",
+    "highlight.js": "^11.11.1",
+    "marked": "^16.0.0",
+    "marked-highlight": "^2.2.2",
     "nocodb-sdk": "^0.205.1",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
+    "vue-markdown-render": "^2.2.1",
     "vue-multiselect": "^3.2.0",
     "vue-router": "^4.3.0"
   },

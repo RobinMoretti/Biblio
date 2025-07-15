@@ -1,10 +1,31 @@
 <script setup>
 import { ref } from "vue";
 
-defineProps(["game", "baseUrl"]);
+let props = defineProps(["game", "baseUrl"]);
+
+let date = ref(props.game["created"]);
 
 // Correction : utiliser ref() pour rendre la variable réactive
 const visible = ref(true);
+
+if (date.value) {
+    const dateOptions = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    };
+
+    date.value = new Date(date.value).toLocaleDateString(undefined, dateOptions);
+}
+
+let duration = ref(props.game["duration"]);
+if (duration.value < 1) {
+    // convert duration into minutes
+    duration.value = Math.round(duration.value * 60);
+    duration.value += " minute" + (duration.value > 0.01 ? "s" : "");
+} else if (duration.value > 1) {
+    duration.value += " heure" + (duration.value > 1 ? "s" : "");
+}
 </script>
 
 <template>
@@ -15,8 +36,8 @@ const visible = ref(true);
         />
 
         <header>
-            <h2>{{ game.name }}</h2>
-            <p class="created-date">{{ game["created"] }}</p>
+            <h2 :class="{ 'small-text': game.name.length > 20 }">{{ game.name }}</h2>
+            <p class="created-date">{{ game.created }}</p>
             <p class="author">{{ game["author"] }}</p>
             <button class="detail-button" v-on:click="visible = !visible">
                 {{ visible ? "plus d'infos" : "cacher" }}
@@ -27,10 +48,10 @@ const visible = ref(true);
             <p class="details row" v-if="game.specificity">
                 {{ game["specificity"] }}
             </p>
-            <p class="time row" v-if="game.duration">
+            <p class="time row" v-if="duration">
                 <span class="left-column title">Durée :</span>
-                <span class="right-column"
-                    >{{ game["duration"] }} heure{{ game["duration"] > 1 ? "s" : "" }}
+                <span class="right-column">
+                    {{ duration }}
                 </span>
             </p>
 
@@ -90,8 +111,7 @@ const visible = ref(true);
                         v-for="(style, key) in game.style"
                         v-bind:key="'style-' + key"
                     >
-                        {{ style }}
-                        {{ key < game.style.length - 1 ? "," : "" }}
+                        {{ style }}{{ key < game.style.length - 1 ? ", " : "" }}
                     </span>
                 </span>
             </div>
@@ -123,6 +143,9 @@ const visible = ref(true);
 
     header {
         position: relative;
+        h2 {
+            max-width: 70%;
+        }
 
         .detail-button {
             cursor: pointer;
@@ -212,6 +235,10 @@ const visible = ref(true);
         background-color: rgb(155, 155, 155);
         color: white;
         font-weight: bold;
+    }
+
+    .small-text {
+        font-size: 1rem;
     }
 }
 

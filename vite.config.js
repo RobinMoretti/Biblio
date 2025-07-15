@@ -5,8 +5,13 @@ import vue from '@vitejs/plugin-vue'
 import VueDevTools from 'vite-plugin-vue-devtools'
 import { createDirectus, rest, authentication, readItems} from '@directus/sdk';
 
+let client;
+
 export default defineConfig(async () => {
-	const data = await getData();
+	await initClient();
+
+	const data = await getGames();
+	const tipsCards = await getTipsCards();
   
 	return {
 		plugins: [
@@ -18,18 +23,31 @@ export default defineConfig(async () => {
 				'@': fileURLToPath(new URL('./src', import.meta.url))
 			}
 		},
-		define: { 'process.env': { data: data, baseUrl: "https://directus.robinmoretti.eu"} },
+		define: { 'process.env': { data: data, tipsCards: tipsCards, baseUrl: "https://directus.robinmoretti.eu"} },
 		build: {
 			outDir: './www'
 		}
 	}
 })
 
-async function getData() {
+async function initClient(){
+	client = createDirectus('https://directus.robinmoretti.eu').with(rest()).with(authentication());
+	await client.setToken('TRi-qBTq1ZAbg3qv-ETSeWn_nMBf2l1C');
+}
+
+async function getGames() {
     try {
-        const client = createDirectus('https://directus.robinmoretti.eu').with(rest()).with(authentication());
-		await client.setToken('TRi-qBTq1ZAbg3qv-ETSeWn_nMBf2l1C');
         return await client.request(readItems('ludoth_que'));
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+async function getTipsCards() {
+    try {
+        return await client.request(readItems('resources_game_dev', {
+			fields: ['*.*.*'],
+		}));
     }
     catch (e) {
         console.log(e)
