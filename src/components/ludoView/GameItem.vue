@@ -11,15 +11,14 @@ const visible = ref(false);
 onMounted(() => {
     if (
         route.params.gameId &&
-        route.params.gameId ==
-            (props.game.id || props.game.name.toLowerCase().replace(/\s+/g, "-"))
+        route.params.gameId == props.game.name.toLowerCase().replace(/\s+/g, "-")
     ) {
         visible.value = true;
     }
 });
 
 const toggleContent = () => {
-    const gameId = props.game.id || props.game.name.toLowerCase().replace(/\s+/g, "-");
+    const gameId = props.game.name.toLowerCase().replace(/\s+/g, "-");
 
     visible.value = !visible.value;
 
@@ -34,10 +33,7 @@ const toggleContent = () => {
 </script>
 
 <template>
-    <div
-        class="game-item"
-        :id="`game-${game.id || game.name.toLowerCase().replace(/\s+/g, '-')}`"
-    >
+    <div class="game-item" :id="`game-${game.name.toLowerCase().replace(/\s+/g, '-')}`">
         <img
             v-if="game.image"
             :src="baseUrl + '/assets/' + game.image + '?width=1500&quality=98'"
