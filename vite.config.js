@@ -38,7 +38,6 @@ async function initClient(){
 async function getGames() {
     try {
         return await client.request(readItems('ludoth_que', {
-			// fields: ['*.*.*'],
     		sort: ['-id'],
 		}));
     }

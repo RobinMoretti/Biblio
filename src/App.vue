@@ -7,7 +7,10 @@ import { RouterLink, RouterView } from "vue-router";
         <div class="wrapper">
             <div class="first-part">
                 <img class="avatar" src="./assets/avatar-icon-2.png" alt="" />
-                <h1>Bibliothèque numérique - {{ $route.name }}</h1>
+                <h1>
+                    Bibliothèque numérique <span class="hide-mobile">-</span>
+                    {{ $route.name }}
+                </h1>
             </div>
             <nav>
                 <RouterLink to="/Ludoth-que">Ludoth-que</RouterLink>
@@ -37,19 +40,35 @@ import { RouterLink, RouterView } from "vue-router";
 
     align-items: center;
 
+    @media (max-width: 800px) {
+        flex-direction: column;
+    }
+
     .first-part {
         display: flex;
         width: 60%;
         align-items: center;
+
+        @media (max-width: 800px) {
+            width: 100%;
+        }
     }
     h1 {
         font-size: 1.5rem;
+        @media (max-width: 800px) {
+            text-align: right;
+            font-size: 1.1rem;
+        }
     }
 
     .avatar {
         margin-left: 11%;
         width: 3rem;
         margin-right: 1rem;
+        @media (max-width: 800px) {
+            margin: 0rem;
+            width: 5rem;
+        }
     }
 
     h1 {
@@ -72,6 +91,15 @@ import { RouterLink, RouterView } from "vue-router";
         }
 
         margin-right: 11%;
+
+        @media (max-width: 800px) {
+            width: 100%;
+            margin: 0;
+            text-align: center;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
     }
 }
 </style>

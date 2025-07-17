@@ -1,32 +1,57 @@
 <!-- eslint-disable no-undef -->
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, nextTick, watch } from "vue";
+import { useRoute } from "vue-router";
 import GameItem from "@/components/ludoView/GameItem.vue";
-import Multiselect from "vue-multiselect";
+
+const route = useRoute();
 let games = ref(process.env.data);
-
-// let types = new Set();
-
-// games.value.forEach((game) => {
-//     if (game.type && game.type.length) {
-//         game.type.forEach((type) => types.add(type));
-//     }
-// });
-
-// types = Array.from(types);
-
-// let selectedType = ref([]);
-
 const baseUrl = ref(process.env.baseUrl);
+
+// Fonction pour scroller vers un jeu spécifique
+const scrollToGame = async (gameId) => {
+    await nextTick();
+    const element = document.getElementById(`game-${gameId}`);
+    if (element) {
+        element.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+        // Optionnel : ajouter une classe pour highlighting
+        element.classList.add("highlighted");
+        setTimeout(() => {
+            element.classList.remove("highlighted");
+        }, 3000);
+    }
+};
+
+// Watcher pour surveiller les changements de route
+watch(
+    () => route.params.gameId,
+    (newGameId) => {
+        if (newGameId) {
+            setTimeout(() => {
+                scrollToGame(newGameId);
+            }, 100);
+        }
+    }
+);
+
+onMounted(() => {
+    // Si on a un paramètre gameId dans l'URL
+    if (route.params.gameId) {
+        scrollToGame(route.params.gameId);
+    }
+});
+
+const dateOptions = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+};
 
 games.value.forEach((game) => {
     if (game["created"]) {
-        const dateOptions = {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-        };
-
         game["created"] = new Date(game["created"]).toLocaleDateString(
             undefined,
             dateOptions
@@ -37,7 +62,7 @@ games.value.forEach((game) => {
 
 <template>
     <main>
-        <p class="description">Une simple collection de jeux à conseiller.</p>
+        <p class="page-description">Une simple collection de jeux à conseiller.</p>
         <div class="games-container">
             <game-item
                 v-for="(game, key) in games"
@@ -49,7 +74,6 @@ games.value.forEach((game) => {
     </main>
 </template>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped lang="scss">
 main {
     max-width: 1280px;
@@ -59,10 +83,7 @@ main {
     padding: 0;
     width: 100%;
     padding: 0 3rem;
-    .description {
-        margin-bottom: 2rem;
-        font-size: 1.1rem;
-    }
+
     .games-container {
         display: flex;
         justify-content: space-between;
@@ -79,5 +100,24 @@ main {
     }
 
     padding-bottom: 3rem;
+}
+
+.game-item.highlighted {
+    animation: highlight 2s ease-in-out;
+}
+
+@keyframes highlight {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 0 10px rgba(255, 193, 7, 0.3);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+    }
 }
 </style>

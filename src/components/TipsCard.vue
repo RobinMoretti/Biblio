@@ -67,7 +67,9 @@ let visible = ref(true);
                 v-if="card['header_image']"
             />
             <div class="text-content">
-                <p>Source : <a href="">Link</a></p>
+                <p v-if="card['Lien_externe']">
+                    Source : <a href="card['Lien_externe']">Lien</a>
+                </p>
                 <p v-if="description" v-html="description" class="markdown-body"></p>
             </div>
 
@@ -194,11 +196,12 @@ let visible = ref(true);
         &.hide {
             max-height: 0;
             margin: 0;
+            padding: 0;
         }
 
         img {
             width: 300px;
-            height: 200px;
+            // height: 200px;
             object-fit: cover;
             border-radius: 10px;
         }

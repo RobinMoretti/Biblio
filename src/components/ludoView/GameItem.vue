@@ -1,119 +1,132 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
-let props = defineProps(["game", "baseUrl"]);
+const props = defineProps(["game", "baseUrl"]);
+const router = useRouter();
+const route = useRoute();
 
-let date = ref(props.game["created"]);
+const visible = ref(false);
 
-// Correction : utiliser ref() pour rendre la variable réactive
-const visible = ref(true);
+onMounted(() => {
+    if (
+        route.params.gameId &&
+        route.params.gameId ==
+            (props.game.id || props.game.name.toLowerCase().replace(/\s+/g, "-"))
+    ) {
+        visible.value = true;
+    }
+});
 
-if (date.value) {
-    const dateOptions = {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-    };
+const toggleContent = () => {
+    const gameId = props.game.id || props.game.name.toLowerCase().replace(/\s+/g, "-");
 
-    date.value = new Date(date.value).toLocaleDateString(undefined, dateOptions);
-}
+    visible.value = !visible.value;
 
-let duration = ref(props.game["duration"]);
-if (duration.value < 1) {
-    // convert duration into minutes
-    duration.value = Math.round(duration.value * 60);
-    duration.value += " minute" + (duration.value > 0.01 ? "s" : "");
-} else if (duration.value > 1) {
-    duration.value += " heure" + (duration.value > 1 ? "s" : "");
-}
+    setTimeout(() => {
+        if (visible.value) {
+            router.push({ name: "LudothèqueWithGame", params: { gameId: gameId } });
+        } else {
+            router.push({ name: "Ludothèque" });
+        }
+    }, 300);
+};
 </script>
 
 <template>
-    <div class="game-item">
+    <div
+        class="game-item"
+        :id="`game-${game.id || game.name.toLowerCase().replace(/\s+/g, '-')}`"
+    >
         <img
             v-if="game.image"
-            v-lazy="baseUrl + '/assets/' + game.image + '?width=1500&quality=98'"
+            :src="baseUrl + '/assets/' + game.image + '?width=1500&quality=98'"
         />
 
         <header>
             <h2 :class="{ 'small-text': game.name.length > 20 }">{{ game.name }}</h2>
             <p class="created-date">{{ game.created }}</p>
             <p class="author">{{ game["author"] }}</p>
-            <button class="detail-button" v-on:click="visible = !visible">
-                {{ visible ? "plus d'infos" : "cacher" }}
+            <button class="detail-button" @click="toggleContent">
+                {{ !visible ? "plus d'infos" : "cacher" }}
             </button>
         </header>
 
-        <div class="content" :class="{ hide: visible }">
-            <p class="details row" v-if="game.specificity">
-                {{ game["specificity"] }}
-            </p>
-            <p class="time row" v-if="duration">
-                <span class="left-column title">Durée :</span>
-                <span class="right-column">
-                    {{ duration }}
-                </span>
-            </p>
-
-            <p class="warning row" v-if="game.warning">
-                <span class="left-column title">⚠️</span>
-                <span class="right-column">{{ game.warning }}</span>
-            </p>
-
-            <div class="tags-container row" v-if="game.type && game.type.length">
-                <span class="left-column title">Types :</span>
-
-                <span class="text-right">
-                    <span
-                        class="right-column"
-                        v-for="(type, key) in game.type"
-                        v-bind:key="'type-' + key"
-                    >
-                        {{ type }}{{ key < game.type.length - 1 ? ", " : "" }}
+        <div class="content" :class="{ hide: !visible }">
+            <div class="content-inner">
+                <p class="details row" v-if="game.specificity">
+                    {{ game["specificity"] }}
+                </p>
+                <p class="time row" v-if="duration">
+                    <span class="left-column title">Durée :</span>
+                    <span class="right-column">
+                        {{ duration }}
                     </span>
-                </span>
-            </div>
+                </p>
 
-            <p class="difficulty row" v-if="game.difficulty">
-                <span class="left-column title">Difficulté :</span>
-                <span class="right-column">
-                    {{ game.difficulty }}
-                </span>
-            </p>
-            <p class="budget row" v-if="game.price">
-                <span class="left-column title">Budget :</span>
-                <span class="right-column">{{ game.price }}€</span>
-            </p>
+                <p class="warning row" v-if="game.warning">
+                    <span class="left-column title">⚠️</span>
+                    <span class="right-column">{{ game.warning }}</span>
+                </p>
 
-            <div
-                class="platformes-container row"
-                v-if="game.platform && game.platform.length"
-            >
-                <span class="left-column title">Platformes :</span>
+                <div class="tags-container row" v-if="game.type && game.type.length">
+                    <span class="left-column title">Types :</span>
 
-                <span class="text-right">
-                    <span
-                        class="right-column"
-                        v-for="(platform, key) in game.platform"
-                        v-bind:key="'platform-' + key"
-                    >
-                        {{ platform }}{{ key < game.platform.length - 1 ? ", " : "" }}
+                    <span class="text-right">
+                        <span
+                            class="right-column"
+                            v-for="(type, key) in game.type"
+                            v-bind:key="'type-' + key"
+                        >
+                            {{ type }}{{ key < game.type.length - 1 ? ", " : "" }}
+                        </span>
                     </span>
-                </span>
-            </div>
+                </div>
 
-            <div class="styles-container row last" v-if="game.style && game.style.length">
-                <span class="left-column title">Styles :</span>
-
-                <span class="text-right">
-                    <span
-                        class="right-column"
-                        v-for="(style, key) in game.style"
-                        v-bind:key="'style-' + key"
-                    >
-                        {{ style }}{{ key < game.style.length - 1 ? ", " : "" }}
+                <p class="difficulty row" v-if="game.difficulty">
+                    <span class="left-column title">Difficulté :</span>
+                    <span class="right-column">
+                        {{ game.difficulty }}
                     </span>
-                </span>
+                </p>
+                <p class="budget row" v-if="game.price">
+                    <span class="left-column title">Budget :</span>
+                    <span class="right-column">{{ game.price }}€</span>
+                </p>
+
+                <div
+                    class="platformes-container row"
+                    v-if="game.platform && game.platform.length"
+                >
+                    <span class="left-column title">Platformes :</span>
+
+                    <span class="text-right">
+                        <span
+                            class="right-column"
+                            v-for="(platform, key) in game.platform"
+                            v-bind:key="'platform-' + key"
+                        >
+                            {{ platform }}{{ key < game.platform.length - 1 ? ", " : "" }}
+                        </span>
+                    </span>
+                </div>
+
+                <div
+                    class="styles-container row last"
+                    v-if="game.style && game.style.length"
+                >
+                    <span class="left-column title">Styles :</span>
+
+                    <span class="text-right">
+                        <span
+                            class="right-column"
+                            v-for="(style, key) in game.style"
+                            v-bind:key="'style-' + key"
+                        >
+                            {{ style }}{{ key < game.style.length - 1 ? ", " : "" }}
+                        </span>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
@@ -187,8 +200,8 @@ if (duration.value < 1) {
         }
 
         &.hide {
-            max-height: 0;
             padding: 0;
+            max-height: 0;
         }
     }
 
