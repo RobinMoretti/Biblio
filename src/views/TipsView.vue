@@ -11,9 +11,9 @@ let tipsCardsDatas = ref(process.env.tipsCards);
 <template>
     <main>
         <p class="page-description">
-            <b style="font-weight: 700">PAS ENCORE DISPO SUR MOBILE</b> <br />
             Une simple collection d’astuces et d’outils utiles à la création de jeux faits
             maison.
+            <br />Pour le moment Unity3d principalement, bientôt Godot 🙈
         </p>
 
         <div class="table">
@@ -41,6 +41,18 @@ main {
     margin: auto;
     margin-top: 2rem;
     width: 100%;
+    padding: 0 2rem;
+
+    @media (max-width: 1250px) {
+    }
+
+    @media (max-width: 600px) {
+        padding: 0%;
+
+        .page-description {
+            padding: 2rem;
+        }
+    }
 
     .table {
         display: flex;
@@ -58,11 +70,17 @@ main {
         border: solid 1px rgba($color: #000000, $alpha: 0.1);
         overflow: hidden;
 
+        margin-bottom: 3rem;
+
         @media (max-width: 1250px) {
         }
         @media (max-width: 800px) {
             padding: 0 1rem;
             margin-top: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            padding: 0;
         }
 
         padding-bottom: 3rem;
@@ -84,25 +102,53 @@ main {
 
             .title {
                 width: 20%;
+
+                .description {
+                    display: none;
+                }
+
+                @media (max-width: 600px) {
+                    width: 80%;
+
+                    .description {
+                        display: initial;
+                    }
+                }
             }
 
             .description {
                 width: 45%;
                 text-align: left;
+                @media (max-width: 820px) {
+                    width: 55%;
+                }
+                @media (max-width: 600px) {
+                    display: none;
+                }
             }
 
             .category {
                 width: 5%;
                 text-align: center;
+
+                @media (max-width: 1000px) {
+                    display: none;
+                }
             }
 
             .tags-container {
                 width: 20%;
                 text-align: center;
+                @media (max-width: 820px) {
+                    display: none;
+                }
             }
 
             .empty-container {
                 width: 10%;
+                @media (max-width: 820px) {
+                    // width: 20%;
+                }
             }
         }
     }

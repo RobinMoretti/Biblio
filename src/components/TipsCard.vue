@@ -34,7 +34,10 @@ let visible = ref(true);
 <template>
     <div class="tip-item" v-if="card">
         <header>
-            <span v-html="card.Title" class="title"></span>
+            <span class="title">
+                {{ card.Title }} <br />
+                <span v-html="card['Short_description']" class="description"></span>
+            </span>
             <span v-html="card['Short_description']" class="description"></span>
             <span class="category">
                 <div
@@ -59,6 +62,24 @@ let visible = ref(true);
             </div>
         </header>
         <div class="content" :class="{ hide: visible }">
+            <header>
+                <span class="category">
+                    <div
+                        class="tag"
+                        v-html="card['Category']"
+                        :class="card['Category']"
+                    ></div>
+                </span>
+                <span class="tags-container">
+                    <span
+                        class="tag"
+                        v-for="(tag, key) in card['resources_tags']"
+                        v-bind:key="'tag-' + key"
+                    >
+                        {{ tag.resources_game_dev_tags_id.name }}
+                    </span>
+                </span>
+            </header>
             <img
                 v-lazy="
                     'https://directus.robinmoretti.eu/assets/' + card['header_image'].id
@@ -94,6 +115,12 @@ let visible = ref(true);
         padding: 15px;
     }
 }
+@media (max-width: 600px) {
+    .markdown-body {
+        padding: 0px;
+        margin-top: 1rem;
+    }
+}
 
 .tip-item {
     width: 100%;
@@ -106,6 +133,11 @@ let visible = ref(true);
     // border-right: none;
     padding-left: 2rem;
     padding-right: 2rem;
+
+    @media (max-width: 600px) {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 
     header {
         width: 100%;
@@ -122,12 +154,30 @@ let visible = ref(true);
             font-size: 1.1rem;
             font-weight: 500;
             padding-right: 20px;
+            .description {
+                display: none;
+            }
+
+            @media (max-width: 600px) {
+                width: 80%;
+
+                .description {
+                    display: initial;
+                }
+            }
         }
 
         .description {
             width: 45%;
             text-align: left;
             padding-right: 20px;
+
+            @media (max-width: 820px) {
+                width: 60%;
+            }
+            @media (max-width: 600px) {
+                display: none;
+            }
         }
 
         .category,
@@ -145,6 +195,10 @@ let visible = ref(true);
         .category {
             width: 5%;
             text-align: center;
+
+            @media (max-width: 1000px) {
+                display: none;
+            }
             .tag {
                 margin-left: 0rem;
                 display: inline;
@@ -161,11 +215,18 @@ let visible = ref(true);
         .tags-container {
             width: 20%;
             text-align: center;
+
+            @media (max-width: 820px) {
+                display: none;
+            }
         }
 
         .displayer-button {
             width: 10%;
             position: relative;
+            @media (max-width: 820px) {
+                // width: 20%;
+            }
 
             .detail-button {
                 cursor: pointer;
@@ -179,6 +240,10 @@ let visible = ref(true);
                 left: 0px;
                 top: -37px;
                 transform: translate(50%);
+
+                @media (max-width: 820px) {
+                    left: -62px;
+                }
             }
         }
     }
@@ -199,11 +264,34 @@ let visible = ref(true);
             padding: 0;
         }
 
+        header {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            flex-direction: column;
+            width: 100%;
+
+            header {
+                .category {
+                    display: inline;
+                }
+                .tags-container {
+                    display: inline;
+                }
+
+                margin-bottom: 1rem;
+            }
+        }
+
         img {
             width: 300px;
             // height: 200px;
             object-fit: cover;
             border-radius: 10px;
+            @media (max-width: 600px) {
+                width: 100%;
+            }
         }
 
         .text-content {
@@ -211,6 +299,11 @@ let visible = ref(true);
             padding-left: 1rem;
             * {
                 max-width: 100%;
+            }
+
+            @media (max-width: 600px) {
+                width: 100%;
+                padding-left: 0rem;
             }
 
             code {

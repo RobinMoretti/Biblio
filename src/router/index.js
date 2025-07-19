@@ -15,7 +15,7 @@ const router = createRouter({
 	},
 	{
 	  path: '/ludoth-que/:gameId?',
-	  name: 'LudothèqueWithGame',
+	  name: 'Ludothèque',
 	  component: () => import('../views/LudoView.vue')
 	},
 	{

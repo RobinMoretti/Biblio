@@ -19,6 +19,7 @@
     "nocodb-sdk": "^0.205.1",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
+    "vue-i18n": "^11.1.10",
     "vue-lazyload": "^3.0.0",
     "vue-markdown-render": "^2.2.1",
     "vue-multiselect": "^3.2.0",

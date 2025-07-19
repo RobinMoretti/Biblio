@@ -24,7 +24,7 @@ const toggleContent = () => {
 
     setTimeout(() => {
         if (visible.value) {
-            router.push({ name: "LudothèqueWithGame", params: { gameId: gameId } });
+            router.push({ name: "Ludothèque", params: { gameId: gameId } });
         } else {
             router.push({ name: "Ludothèque" });
         }
@@ -40,11 +40,17 @@ const toggleContent = () => {
         />
 
         <header>
-            <h2 :class="{ 'small-text': game.name.length > 20 }">{{ game.name }}</h2>
+            <h2 :class="{ 'small-text': game.name.length > 20 }">
+                {{ game.name }}
+                <span v-if="game.link">
+                    <a target="_blank" :href="game.link">🔗</a>
+                </span>
+            </h2>
             <p class="created-date">{{ game.created }}</p>
+
             <p class="author">{{ game["author"] }}</p>
             <button class="detail-button" @click="toggleContent">
-                {{ !visible ? "plus d'infos" : "cacher" }}
+                {{ $t("message.visibility." + (!visible ? "more" : "less")) }}
             </button>
         </header>
 
@@ -74,7 +80,8 @@ const toggleContent = () => {
                             v-for="(type, key) in game.type"
                             v-bind:key="'type-' + key"
                         >
-                            {{ type }}{{ key < game.type.length - 1 ? ", " : "" }}
+                            {{ $t("message.types." + type)
+                            }}{{ key < game.type.length - 1 ? ", " : "" }}
                         </span>
                     </span>
                 </div>
@@ -82,12 +89,14 @@ const toggleContent = () => {
                 <p class="difficulty row" v-if="game.difficulty">
                     <span class="left-column title">Difficulté :</span>
                     <span class="right-column">
-                        {{ game.difficulty }}
+                        {{ $t("message.difficulties." + game.difficulty) }}
                     </span>
                 </p>
-                <p class="budget row" v-if="game.price">
+                <p class="budget row" v-if="game.price >= 0">
                     <span class="left-column title">Budget :</span>
-                    <span class="right-column">{{ game.price }}€</span>
+                    <span class="right-column">{{
+                        game.price == 0 ? $t("message.price-free") : game.price + "€"
+                    }}</span>
                 </p>
 
                 <div
@@ -102,7 +111,8 @@ const toggleContent = () => {
                             v-for="(platform, key) in game.platform"
                             v-bind:key="'platform-' + key"
                         >
-                            {{ platform }}{{ key < game.platform.length - 1 ? ", " : "" }}
+                            {{ $t("message.platforms." + platform) }}
+                            {{ key < game.platform.length - 1 ? ", " : "" }}
                         </span>
                     </span>
                 </div>
